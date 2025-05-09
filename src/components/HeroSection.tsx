@@ -37,7 +37,7 @@ export default function HeroSection() {
         >
           <div className="text-center md:text-left">
             <motion.h1
-              className="text-4xl font-bold mb-2"
+              className="text-4xl font-bold mb-2 animate-pulse"
               variants={childVariants}
             >
               {personalInfo.name}{" "}
@@ -111,8 +111,8 @@ export default function HeroSection() {
               <img
                 src="/profile.jpg"
                 alt="Profile"
-                className="w-48 md:w-60 rounded-full relative ring-2 ring-purple-500/50"
-                style={{ objectFit: "cover" }}
+                className="w-48 md:w-60 rounded-full relative ring-2 ring-purple-500/50 h-40 md:h-60"
+                style={{ objectFit: "cover", objectPosition: "top" }}
               />
             </div>
           </motion.div>
@@ -121,16 +121,17 @@ export default function HeroSection() {
         <MotionWrapper>
           <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm backdrop-filter p-4 rounded-lg border border-purple-500/20 dark:border-purple-500/10 shadow-sm">
             <p className="text-muted-foreground pl-4 py-2 mb-4 relative">
-              <span className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full"></span>
-              🚀 Passionate software engineer with a versatile skill set
-              spanning multiple domains. I thrive on solving complex challenges
-              across different platforms and environments, adapting quickly to
-              new technologies and methodologies. My holistic approach combines
-              technical expertise with creative problem-solving, allowing me to
-              develop solutions that are both innovative and practical. I'm
-              driven by continuous learning and a commitment to excellence,
-              whether working independently or collaborating with diverse teams
-              to create impactful, scalable solutions.
+              <span className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full" />
+              🚀 I am a Computer Engineer 👨🏻‍🎓, extremely enthusiastic about web
+              development 💻. I consider myself a proactive developer with
+              intellectual curiosity to learn and know more and more. Interested
+              in both backend and frontend development, always with the
+              necessary attitude to keep myself updated with the latest
+              technologies. I like to keep learning and go beyond what is
+              necessary, so I sought learning on my own, by doing real-life
+              projects and learning current technologies by myself. In this way,
+              I also learned English at a conversational level. Spanish/English
+              (advanced).
             </p>
           </div>
         </MotionWrapper>
