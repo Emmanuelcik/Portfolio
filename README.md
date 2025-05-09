@@ -13,13 +13,15 @@ A sleek, responsive portfolio website built with **Astro**, **React**, and **Tai
 - **Modular Structure** – Built for easy customization and scalability
 - **SEO Friendly** – Structured content and meta tags for better visibility
 
+### See live Demo
+[Live Demo](https://portfolio-p9q4dtmnn-emmanuelciks-projects.vercel.app/)
+
 ## 🛠 Getting Started
 
 ### Prerequisites
 
 - Node.js (v18+ recommended)
 - npm / yarn / bun
-
 ### Installation
 
 ```bash
