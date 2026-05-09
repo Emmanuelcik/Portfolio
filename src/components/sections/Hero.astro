@@ -1,0 +1,155 @@
+---
+import Button from "~/components/ui/Button.astro";
+import Icon from "~/components/ui/Icon.astro";
+import SocialLinks from "~/components/ui/SocialLinks.astro";
+import { useTranslations } from "~/i18n/utils";
+import type { Lang } from "~/i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section class="hero">
+  <div class="hero-glow" aria-hidden="true"></div>
+
+  <div class="container hero-content">
+    <p class="status">
+      <span class="status-dot" aria-hidden="true"></span>
+      {t("hero.status")}
+    </p>
+
+    <h1 class="name">
+      {t("hero.greeting")}
+      <span class="gradient-text">Emmanuel</span>.
+    </h1>
+
+    <p class="tagline">{t("hero.tagline")}</p>
+    <p class="intro">{t("hero.intro")}</p>
+
+    <div class="ctas">
+      <Button href="#contact" variant="primary">
+        {t("cta.contact")}
+        <Icon name="arrow-right" size={18} />
+      </Button>
+      <Button href="/cv.pdf" variant="ghost" download>
+        <Icon name="download" size={18} />
+        {t("cta.cv")}
+      </Button>
+    </div>
+
+    <SocialLinks class="hero-socials" />
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    isolation: isolate;
+    padding-block: var(--space-20) var(--space-16);
+    overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute;
+    inset: -10% -20% auto -20%;
+    height: 90%;
+    background: var(--gradient-glow);
+    opacity: 0.7;
+    pointer-events: none;
+    z-index: -1;
+    animation: glow-pulse 8s var(--ease-out-quart) infinite;
+  }
+
+  /* Stagger entrance via :nth-child  order matters to taste, not logic */
+  .hero-content > * {
+    opacity: 0;
+    animation: fade-in-up var(--duration-slow) var(--ease-out-quart) forwards;
+  }
+  .hero-content > *:nth-child(1) {
+    animation-delay: 0ms;
+  }
+  .hero-content > *:nth-child(2) {
+    animation-delay: 80ms;
+  }
+  .hero-content > *:nth-child(3) {
+    animation-delay: 160ms;
+  }
+  .hero-content > *:nth-child(4) {
+    animation-delay: 240ms;
+  }
+  .hero-content > *:nth-child(5) {
+    animation-delay: 320ms;
+  }
+  .hero-content > *:nth-child(6) {
+    animation-delay: 400ms;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    letter-spacing: var(--tracking-wide);
+    margin-bottom: var(--space-6);
+  }
+
+  .status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-pill);
+    background: var(--color-success);
+    box-shadow: 0 0 0 0
+      color-mix(in srgb, var(--color-success) 60%, transparent);
+    animation: status-pulse 2.4s var(--ease-out-quart) infinite;
+  }
+
+  .name {
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: var(--space-6);
+    text-wrap: balance;
+    view-transition-name: page-title;
+  }
+
+  .tagline {
+    font-size: var(--text-xl);
+    color: var(--color-text);
+    max-width: 32ch;
+    margin-bottom: var(--space-4);
+    line-height: var(--leading-snug);
+  }
+
+  .intro {
+    color: var(--color-text-muted);
+    max-width: 56ch;
+    margin-bottom: var(--space-8);
+  }
+
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-bottom: var(--space-8);
+  }
+
+  @media (min-width: 768px) {
+    .hero {
+      padding-block: var(--space-32) var(--space-24);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-content > *,
+    .hero-glow,
+    .status-dot {
+      animation: none;
+      opacity: 1;
+    }
+  }
+</style>

@@ -62,44 +62,6 @@ All design decisions live in `src/styles/tokens.css`:
 
 Adjust there; the rest of the codebase consumes via `var(--token-name)`.
 
-## Personal GitHub setup (one-time)
-
-This repo is pushed using the **personal** GitHub account (`Emmanuelcik`), not the work account. The work SSH key is `~/.ssh/id_ed25519` and must NOT authenticate personal repos.
-
-1. Create a personal SSH key (skip if you already have one):
-
-   ```bash
-   ssh-keygen -t ed25519 -C "jesusemmcik@gmail.com" -f ~/.ssh/id_ed25519_personal
-   ```
-
-2. Add the public key to <https://github.com/settings/keys> on the personal account.
-
-3. Configure an SSH host alias in `~/.ssh/config`:
-
-   ```sshconfig
-   Host github.com-personal
-     HostName github.com
-     User git
-     IdentityFile ~/.ssh/id_ed25519_personal
-     IdentitiesOnly yes
-   ```
-
-4. When you `git init` this repo, set the user identity locally so commits aren't attributed to the work email:
-
-   ```bash
-   git init
-   git config user.name "Jesús Emmanuel López Guerrero"
-   git config user.email "jesusemmcik@gmail.com"
-   git remote add origin git@github.com-personal:Emmanuelcik/portfolio.git
-   ```
-
-5. Verify:
-
-   ```bash
-   ssh -T git@github.com-personal       # should greet you as Emmanuelcik
-   git config user.email                # should print jesusemmcik@gmail.com
-   ```
-
 ## Performance & SEO baseline
 
 - Static pages, zero client JS by default. Islands hydrated only when needed.

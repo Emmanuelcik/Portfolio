@@ -26,6 +26,12 @@
   50%      { transform: translate3d(0, -6px, 0); }
 }
 
+@keyframes status-pulse {
+  0%   { box-shadow: 0 0 0 0   color-mix(in srgb, var(--color-success) 50%, transparent); }
+  70%  { box-shadow: 0 0 0 8px color-mix(in srgb, var(--color-success)  0%, transparent); }
+  100% { box-shadow: 0 0 0 0   color-mix(in srgb, var(--color-success)  0%, transparent); }
+}
+
 /* Reveal-on-scroll. Pair with IntersectionObserver toggling .is-visible */
 .reveal {
   opacity: 0;

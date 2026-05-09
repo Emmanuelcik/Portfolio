@@ -24,8 +24,8 @@ const projects = defineCollection({
       summary: i18nString,
       bullets: i18nStringArray,
       tech: z.array(z.string()),
-      github: z.string().url().optional(),
-      demo: z.string().url().optional(),
+      github: z.url().optional(),
+      demo: z.url().optional(),
       cover: image().optional(),
       featured: z.boolean().default(false),
       order: z.number().default(0),
@@ -44,7 +44,7 @@ const experience = defineCollection({
     current: z.boolean().default(false),
     bullets: i18nStringArray,
     tech: z.array(z.string()).default([]),
-    url: z.string().url().optional(),
+    url: z.url().optional(),
     order: z.number().default(0),
   }),
 });
@@ -59,7 +59,7 @@ const awards = defineCollection({
     type: z
       .enum(['International', 'National', 'Regional', 'Local'])
       .default('Local'),
-    url: z.string().url().optional(),
+    url: z.url().optional(),
   }),
 });
 

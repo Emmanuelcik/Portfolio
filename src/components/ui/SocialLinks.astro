@@ -1,0 +1,56 @@
+---
+import Icon from '~/components/ui/Icon.astro';
+import { SOCIALS } from '~/data/socials';
+
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+<ul class:list={['social-links', className]}>
+  {SOCIALS.map((social) => (
+    <li>
+      <a
+        href={social.href}
+        target={social.icon !== 'mail' ? '_blank' : undefined}
+        rel={social.icon !== 'mail' ? 'noopener noreferrer' : undefined}
+        aria-label={social.label}
+      >
+        <Icon name={social.icon} />
+      </a>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .social-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    align-items: center;
+  }
+
+  .social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--color-border);
+    background: color-mix(in srgb, var(--color-surface) 50%, transparent);
+    color: var(--color-text-muted);
+    transition:
+      color var(--duration-fast) var(--ease-out-quart),
+      border-color var(--duration-fast) var(--ease-out-quart),
+      transform var(--duration-fast) var(--ease-out-quart),
+      background-color var(--duration-fast) var(--ease-out-quart);
+  }
+
+  .social-links a:hover {
+    color: var(--color-primary-soft);
+    border-color: var(--color-primary-soft);
+    background: color-mix(in srgb, var(--color-primary) 8%, transparent);
+    transform: translateY(-2px);
+  }
+</style>

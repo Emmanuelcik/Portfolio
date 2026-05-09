@@ -1,0 +1,83 @@
+---
+/**
+ * Pill-shaped CTA. Two variants:
+ * - primary: gradient background, glow on hover
+ * - ghost:   transparent with subtle border
+ *
+ * Accepts arbitrary children via <slot /> so callers can mix text + icons.
+ */
+interface Props {
+  href: string;
+  variant?: 'primary' | 'ghost';
+  external?: boolean;
+  download?: boolean;
+  ariaLabel?: string;
+  class?: string;
+}
+
+const {
+  href,
+  variant = 'primary',
+  external = false,
+  download = false,
+  ariaLabel,
+  class: className,
+} = Astro.props;
+---
+<a
+  href={href}
+  class:list={['btn', `btn--${variant}`, className]}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noopener noreferrer' : undefined}
+  download={download ? '' : undefined}
+  aria-label={ariaLabel}
+>
+  <slot />
+</a>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-6);
+    border-radius: var(--radius-pill);
+    font-weight: var(--weight-medium);
+    font-size: var(--text-base);
+    line-height: 1.1;
+    text-wrap: nowrap;
+    border: 1px solid transparent;
+    transition:
+      transform var(--duration-fast) var(--ease-out-quart),
+      box-shadow var(--duration-fast) var(--ease-out-quart),
+      background-color var(--duration-fast) var(--ease-out-quart),
+      border-color var(--duration-fast) var(--ease-out-quart),
+      color var(--duration-fast) var(--ease-out-quart);
+  }
+
+  .btn:hover  { transform: translateY(-2px); }
+  .btn:active { transform: translateY(0); }
+
+  .btn--primary {
+    background: var(--gradient-primary);
+    color: var(--color-text-strong);
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn--primary:hover {
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
+  }
+
+  .btn--ghost {
+    background: transparent;
+    color: var(--color-text);
+    border-color: var(--color-border-strong);
+  }
+
+  .btn--ghost:hover {
+    border-color: var(--color-primary-soft);
+    background: color-mix(in srgb, var(--color-primary) 8%, transparent);
+    color: var(--color-text-strong);
+  }
+</style>

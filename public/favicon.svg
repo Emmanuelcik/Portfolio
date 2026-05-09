@@ -1,10 +1,143 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Aurora Violet E Developer Logo</title>
+  <desc id="desc">Logo SVG para desarrollador web con monograma E, marco geométrico tipo brackets y gradiente violeta sobre fondo oscuro.</desc>
+
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#8B5CF6"/>
-      <stop offset="100%" stop-color="#EC4899"/>
+    <!-- Background glow -->
+    <radialGradient id="bgGlow" cx="50%" cy="44%" r="65%">
+      <stop offset="0%" stop-color="#25103F"/>
+      <stop offset="45%" stop-color="#0E0B1D"/>
+      <stop offset="100%" stop-color="#05050B"/>
+    </radialGradient>
+
+    <!-- Aurora violet gradient -->
+    <linearGradient id="auroraViolet" x1="120" y1="80" x2="390" y2="430" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#EC4CFF"/>
+      <stop offset="35%" stop-color="#A855F7"/>
+      <stop offset="70%" stop-color="#7C3AED"/>
+      <stop offset="100%" stop-color="#4F46E5"/>
     </linearGradient>
+
+    <!-- Softer highlight gradient -->
+    <linearGradient id="auroraHighlight" x1="155" y1="118" x2="362" y2="360" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F6B7FF"/>
+      <stop offset="38%" stop-color="#C084FC"/>
+      <stop offset="100%" stop-color="#818CF8"/>
+    </linearGradient>
+
+    <!-- Neon glow -->
+    <filter id="violetGlow" x="-35%" y="-35%" width="170%" height="170%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feColorMatrix in="blur" type="matrix"
+        values="0.70 0 0 0 0.40
+                0 0.30 0 0 0.05
+                0 0 1.00 0 0.95
+                0 0 0 0.65 0" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="softShadow" x="-25%" y="-25%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#000000" flood-opacity="0.45"/>
+    </filter>
   </defs>
-  <rect width="64" height="64" rx="14" fill="url(#g)"/>
-  <text x="50%" y="58%" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="32" fill="#FAFAFA">E</text>
+
+  <!-- Dark background. Remove this rect if you need a transparent logo. -->
+  <rect width="512" height="512" rx="56" fill="url(#bgGlow)"/>
+
+  <!-- Subtle aura behind mark -->
+  <circle cx="256" cy="256" r="156" fill="#7C3AED" opacity="0.08"/>
+  <circle cx="256" cy="256" r="100" fill="#EC4CFF" opacity="0.045"/>
+
+  <g filter="url(#softShadow)">
+    <!-- Code / hexagon frame -->
+    <path
+      d="M256 72
+         L372 139
+         L372 205
+         L426 256
+         L372 307
+         L372 373
+         L256 440
+         L140 373
+         L140 307
+         L86 256
+         L140 205
+         L140 139
+         Z"
+      stroke="url(#auroraViolet)"
+      stroke-width="16"
+      stroke-linejoin="miter"
+      opacity="0.95"
+      filter="url(#violetGlow)"/>
+
+    <!-- Inner dark cut to keep frame crisp -->
+    <path
+      d="M256 101
+         L347 154
+         L347 216
+         L389 256
+         L347 296
+         L347 358
+         L256 411
+         L165 358
+         L165 296
+         L123 256
+         L165 216
+         L165 154
+         Z"
+      fill="#080711"
+      opacity="0.92"/>
+
+    <!-- Stylized E monogram -->
+    <path
+      d="M184 165
+         H342
+         L312 199
+         H226
+         L205 220
+         V240
+         H322
+         L292 274
+         H205
+         V312
+         H334
+         L304 347
+         H184
+         V165Z"
+      fill="url(#auroraViolet)"
+      filter="url(#violetGlow)"/>
+
+    <!-- Angular inner shadow/cutouts for more tech feel -->
+    <path
+      d="M226 199
+         H312
+         L342 165
+         H184
+         V347
+         H205
+         V220
+         L226 199Z"
+      fill="url(#auroraHighlight)"
+      opacity="0.28"/>
+
+    <path
+      d="M205 240
+         H322
+         L292 274
+         H205
+         V240Z"
+      fill="url(#auroraHighlight)"
+      opacity="0.20"/>
+
+    <!-- Small highlight edge -->
+    <path
+      d="M187 168 H334"
+      stroke="#F5D0FE"
+      stroke-width="3"
+      stroke-linecap="round"
+      opacity="0.45"/>
+  </g>
 </svg>
