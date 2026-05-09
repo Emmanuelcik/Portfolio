@@ -3,77 +3,95 @@
  * Use `useTranslations(lang)` from ./utils.ts to consume.
  */
 
-export const defaultLang = 'en' as const;
-export const languages = { en: 'English', es: 'Español' } as const;
+export const defaultLang = "en" as const;
+export const languages = { en: "English", es: "Español" } as const;
 
 export type Lang = keyof typeof languages;
 
 export const ui = {
   en: {
-    'site.title': 'Jesús Emmanuel López Full-Stack Developer',
-    'site.description':
-      'Full-stack developer with 4 years of experience in JavaScript/TypeScript, React, Node.js and Python. I build reliable web platforms and developer tooling.',
+    "site.title": "Jesús Emmanuel López Full-Stack Developer",
+    "site.description":
+      "Full-stack developer with 4 years of experience in JavaScript/TypeScript, React, Node.js and Python. I build reliable web platforms and developer tooling.",
 
-    'nav.about': 'About',
-    'nav.skills': 'Skills',
-    'nav.experience': 'Experience',
-    'nav.projects': 'Projects',
-    'nav.community': 'Community',
-    'nav.contact': 'Contact',
+    "nav.about": "About",
+    "nav.skills": "Skills",
+    "nav.experience": "Experience",
+    "nav.projects": "Projects",
+    "nav.community": "Community",
+    "nav.contact": "Contact",
 
-    'cta.contact': 'Get in touch',
-    'cta.cv': 'Download CV',
-    'cta.viewSource': 'View on GitHub',
+    "cta.contact": "Get in touch",
+    "cta.cv": "Download CV",
+    "cta.viewSource": "View on GitHub",
 
-    'lang.switch': 'Español',
-    'footer.rights': 'All rights reserved.',
+    "lang.switch": "Español",
+    "footer.rights": "All rights reserved.",
 
-    'a11y.skipToContent': 'Skip to content',
-    'a11y.themeToggle': 'Toggle theme',
+    "a11y.skipToContent": "Skip to content",
+    "a11y.themeToggle": "Toggle theme",
 
-    'hero.status': 'Backend Developer at Vierge Group Mexico',
-    'hero.greeting': "Hi, I'm",
-    'hero.tagline':
-      'Full-stack engineer with a backend tilt. I build reliable APIs, configurable platforms, and the occasional LLM integration.',
-    'hero.intro':
-      '4 years shipping production code in JavaScript, TypeScript, Python, and PHP. Currently focused on backend systems for retail point of sale.',
+    "hero.status": "Backend Developer at Vierge Group Mexico",
+    "hero.greeting": "Hi, I'm",
+    "hero.tagline":
+      "Full-stack engineer with a backend tilt. I build reliable APIs, configurable platforms, and the occasional LLM integration.",
+    "hero.intro":
+      "4 years shipping production code in JavaScript, TypeScript, Python, and PHP. Currently focused on backend systems for retail point of sale.",
 
-    '404.title': 'Page not found',
-    '404.body': 'This page does not exist.',
-    '404.cta': 'Back to home',
+    "skills.title": "Tech Stack",
+    "skills.intro":
+      "The tools I reach for to ship reliable, maintainable software. Pragmatic over trendy.",
+    "skills.group.languages": "Languages",
+    "skills.group.frontend": "Frontend",
+    "skills.group.backend": "Backend",
+    "skills.group.data": "Data",
+    "skills.group.tools": "Cloud and Tools",
+
+    "404.title": "Page not found",
+    "404.body": "This page does not exist.",
+    "404.cta": "Back to home",
   },
   es: {
-    'site.title': 'Jesús Emmanuel López Desarrollador Full-Stack',
-    'site.description':
-      'Desarrollador full-stack con 4 años de experiencia en JavaScript/TypeScript, React, Node.js y Python. Construyo plataformas web confiables y herramientas para devs.',
+    "site.title": "Jesús Emmanuel López Desarrollador Full-Stack",
+    "site.description":
+      "Desarrollador full-stack con 4 años de experiencia en JavaScript/TypeScript, React, Node.js y Python. Construyo plataformas web confiables y herramientas para devs.",
 
-    'nav.about': 'Acerca',
-    'nav.skills': 'Stack',
-    'nav.experience': 'Experiencia',
-    'nav.projects': 'Proyectos',
-    'nav.community': 'Comunidad',
-    'nav.contact': 'Contacto',
+    "nav.about": "Acerca",
+    "nav.skills": "Stack",
+    "nav.experience": "Experiencia",
+    "nav.projects": "Proyectos",
+    "nav.community": "Comunidad",
+    "nav.contact": "Contacto",
 
-    'cta.contact': 'Contáctame',
-    'cta.cv': 'Descargar CV',
-    'cta.viewSource': 'Ver en GitHub',
+    "cta.contact": "Contáctame",
+    "cta.cv": "Descargar CV",
+    "cta.viewSource": "Ver en GitHub",
 
-    'lang.switch': 'English',
-    'footer.rights': 'Todos los derechos reservados.',
+    "lang.switch": "English",
+    "footer.rights": "Todos los derechos reservados.",
 
-    'a11y.skipToContent': 'Saltar al contenido',
-    'a11y.themeToggle': 'Cambiar tema',
+    "a11y.skipToContent": "Saltar al contenido",
+    "a11y.themeToggle": "Cambiar tema",
 
-    'hero.status': 'Backend Developer en Vierge Group México',
-    'hero.greeting': 'Hola, soy',
-    'hero.tagline':
-      'Ingeniero full-stack con sesgo a backend. Construyo APIs confiables, plataformas configurables y, de vez en cuando, integraciones con LLMs.',
-    'hero.intro':
-      '4 años entregando código en producción con JavaScript, TypeScript, Python y PHP. Actualmente enfocado en sistemas backend para puntos de venta retail.',
+    "hero.status": "Backend Developer en Vierge Group México",
+    "hero.greeting": "Hola, soy",
+    "hero.tagline":
+      "Ingeniero full-stack con sesgo a backend. Construyo APIs confiables, plataformas configurables y, de vez en cuando, integraciones con LLMs.",
+    "hero.intro":
+      "4 años entregando código en producción con JavaScript, TypeScript, Python y PHP. Actualmente enfocado en sistemas backend para puntos de venta retail.",
 
-    '404.title': 'Página no encontrada',
-    '404.body': 'Esta página no existe.',
-    '404.cta': 'Volver al inicio',
+    "skills.title": "Mi Stack",
+    "skills.intro":
+      "Las herramientas con las que entrego software confiable y mantenible. Pragmatismo antes que tendencia.",
+    "skills.group.languages": "Lenguajes",
+    "skills.group.frontend": "Frontend",
+    "skills.group.backend": "Backend",
+    "skills.group.data": "Datos",
+    "skills.group.tools": "Cloud y Herramientas",
+
+    "404.title": "Página no encontrada",
+    "404.body": "Esta página no existe.",
+    "404.cta": "Volver al inicio",
   },
 } as const;
 

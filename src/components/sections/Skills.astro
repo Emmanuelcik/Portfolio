@@ -1,0 +1,126 @@
+---
+import { useTranslations } from "~/i18n/utils";
+import type { Lang } from "~/i18n/ui";
+import { SKILL_GROUPS } from "~/data/skills";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section id="skills" class="skills">
+  <div class="container">
+    <header class="head reveal">
+      <h2 class="title">
+        <span class="gradient-text">{t("skills.title")}</span>
+      </h2>
+      <p class="intro">{t("skills.intro")}</p>
+    </header>
+
+    <div class="groups">
+      {
+        SKILL_GROUPS.map((group, i) => (
+          <article
+            class="group reveal"
+            data-stagger
+            style={`--reveal-delay: ${i * 80}ms;`}
+          >
+            <h3 class="group-title">{t(group.labelKey)}</h3>
+            <ul class="chips">
+              {group.items.map((item) => (
+                <li class="chip">{item}</li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .skills {
+    padding-block: var(--space-16) var(--space-16);
+  }
+
+  .head {
+    margin-bottom: var(--space-10);
+  }
+
+  .title {
+    font-size: var(--text-3xl);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: var(--space-3);
+  }
+
+  .intro {
+    color: var(--color-text-muted);
+    max-width: 56ch;
+  }
+
+  .groups {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .group-title {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  .chips {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text);
+    transition:
+      border-color var(--duration-fast) var(--ease-out-quart),
+      color var(--duration-fast) var(--ease-out-quart),
+      transform var(--duration-fast) var(--ease-out-quart);
+    cursor: default;
+  }
+
+  .chip:hover {
+    border-color: var(--color-primary-soft);
+    color: var(--color-primary-soft);
+    transform: translateY(-1px);
+  }
+
+  @media (min-width: 768px) {
+    .skills {
+      padding-block: var(--space-24);
+    }
+
+    .head {
+      margin-bottom: var(--space-12);
+    }
+
+    .groups {
+      gap: var(--space-10);
+    }
+  }
+</style>
