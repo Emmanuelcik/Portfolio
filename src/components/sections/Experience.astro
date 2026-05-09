@@ -1,0 +1,294 @@
+---
+import { getCollection } from "astro:content";
+import { useTranslations } from "~/i18n/utils";
+import type { Lang } from "~/i18n/ui";
+import { formatRange } from "~/lib/dates";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const presentLabel = t("experience.present");
+
+const entries = (await getCollection("experience")).sort(
+  (a, b) => b.data.startDate.getTime() - a.data.startDate.getTime(),
+);
+---
+
+<section id="experience" class="experience">
+  <div class="container">
+    <header class="head reveal">
+      <h2 class="title">
+        <span class="gradient-text">{t("experience.title")}</span>
+      </h2>
+      <p class="intro">{t("experience.intro")}</p>
+    </header>
+
+    <ol class="timeline">
+      {
+        entries.map((entry, i) => {
+          const {
+            company,
+            role,
+            location,
+            startDate,
+            endDate,
+            current,
+            bullets,
+            tech,
+            url,
+          } = entry.data;
+          return (
+            <li
+              class:list={["item", "reveal", { current }]}
+              data-stagger
+              style={`--reveal-delay: ${i * 100}ms;`}
+            >
+              <span class="dot" aria-hidden="true" />
+              <article class="card">
+                <header class="card-head">
+                  <h3 class="role">{role[lang]}</h3>
+                  <p class="company">
+                    {url ? (
+                      <a href={url} target="_blank" rel="noopener noreferrer">
+                        {company}
+                      </a>
+                    ) : (
+                      company
+                    )}
+                    {location && <span class="loc"> · {location}</span>}
+                  </p>
+                  <p class="dates">
+                    <time datetime={startDate.toISOString()}>
+                      {formatRange(
+                        startDate,
+                        endDate,
+                        current,
+                        lang,
+                        presentLabel,
+                      )}
+                    </time>
+                  </p>
+                </header>
+
+                <ul class="bullets">
+                  {bullets[lang].map((b) => (
+                    <li>{b}</li>
+                  ))}
+                </ul>
+
+                {tech.length > 0 && (
+                  <ul class="tech" aria-label="Tech stack">
+                    {tech.map((item) => (
+                      <li class="tech-chip">{item}</li>
+                    ))}
+                  </ul>
+                )}
+              </article>
+            </li>
+          );
+        })
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .experience {
+    padding-block: var(--space-16);
+  }
+
+  .head {
+    margin-bottom: var(--space-10);
+  }
+
+  .title {
+    font-size: var(--text-3xl);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: var(--space-3);
+  }
+
+  .intro {
+    color: var(--color-text-muted);
+    max-width: 56ch;
+  }
+
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
+
+  .timeline::before {
+    content: "";
+    position: absolute;
+    top: 8px;
+    bottom: 8px;
+    left: 7px;
+    width: 2px;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-primary) 50%, transparent),
+      color-mix(in srgb, var(--color-primary) 5%, transparent)
+    );
+  }
+
+  .item {
+    position: relative;
+    padding-left: var(--space-8);
+    padding-bottom: var(--space-10);
+  }
+
+  .item:last-child {
+    padding-bottom: 0;
+  }
+
+  .dot {
+    position: absolute;
+    left: 0;
+    top: 6px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--color-bg);
+    border: 2px solid var(--color-primary-soft);
+    box-shadow: 0 0 0 4px
+      color-mix(in srgb, var(--color-primary) 18%, transparent);
+  }
+
+  .item.current .dot {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    animation: status-pulse 2.4s var(--ease-out-quart) infinite;
+  }
+
+  .card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    transition: border-color var(--duration-fast) var(--ease-out-quart);
+  }
+
+  .card:hover {
+    border-color: var(--color-border-strong);
+  }
+
+  .card-head {
+    margin-bottom: var(--space-4);
+  }
+
+  .role {
+    font-size: var(--text-lg);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+    margin-bottom: var(--space-1);
+  }
+
+  .company {
+    color: var(--color-text);
+    font-size: var(--text-base);
+  }
+
+  .company a {
+    color: var(--color-primary-soft);
+    text-decoration: none;
+    border-bottom: 1px solid
+      color-mix(in srgb, var(--color-primary-soft) 40%, transparent);
+    transition: border-color var(--duration-fast) var(--ease-out-quart);
+  }
+
+  .company a:hover {
+    border-color: var(--color-primary-soft);
+  }
+
+  .loc {
+    color: var(--color-text-muted);
+  }
+
+  .dates {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    letter-spacing: var(--tracking-wide);
+    margin-top: var(--space-2);
+  }
+
+  .bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-4) 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .bullets li {
+    position: relative;
+    padding-left: var(--space-4);
+    color: var(--color-text);
+    line-height: var(--leading-snug);
+  }
+
+  .bullets li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-primary-soft);
+  }
+
+  .bullets li:last-child {
+    margin-bottom: 0;
+  }
+
+  .tech {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+  }
+
+  .tech-chip {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    padding: 2px var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    transition: color var(--duration-fast) var(--ease-out-quart);
+  }
+
+  .tech-chip:hover {
+    color: var(--color-primary-soft);
+  }
+
+  @media (min-width: 768px) {
+    .experience {
+      padding-block: var(--space-24);
+    }
+
+    .head {
+      margin-bottom: var(--space-12);
+    }
+
+    .item {
+      padding-left: var(--space-10);
+      padding-bottom: var(--space-12);
+    }
+
+    .card {
+      padding: var(--space-6);
+    }
+  }
+</style>

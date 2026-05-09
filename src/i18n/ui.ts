@@ -47,6 +47,11 @@ export const ui = {
     "skills.group.data": "Data",
     "skills.group.tools": "Cloud and Tools",
 
+    "experience.title": "Experience",
+    "experience.intro":
+      "Where I have shipped real products to real users. Most recent first.",
+    "experience.present": "Present",
+
     "404.title": "Page not found",
     "404.body": "This page does not exist.",
     "404.cta": "Back to home",
@@ -88,6 +93,11 @@ export const ui = {
     "skills.group.backend": "Backend",
     "skills.group.data": "Datos",
     "skills.group.tools": "Cloud y Herramientas",
+
+    "experience.title": "Experiencia",
+    "experience.intro":
+      "Donde he entregado productos reales a usuarios reales. El más reciente arriba.",
+    "experience.present": "Presente",
 
     "404.title": "Página no encontrada",
     "404.body": "Esta página no existe.",
