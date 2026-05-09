@@ -1,0 +1,18 @@
+---
+import { SITE_OWNER, SOCIALS } from '~/data/socials';
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: SITE_OWNER.name,
+  jobTitle: SITE_OWNER.jobTitle,
+  email: `mailto:${SITE_OWNER.email}`,
+  url: Astro.site?.href ?? Astro.url.origin,
+  sameAs: SOCIALS.filter((s) => s.icon !== 'mail').map((s) => s.href),
+  address: {
+    '@type': 'PostalAddress',
+    addressCountry: 'MX',
+  },
+};
+---
+<script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />

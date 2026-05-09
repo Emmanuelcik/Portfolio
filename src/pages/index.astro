@@ -1,0 +1,36 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { useTranslations } from "~/i18n/utils";
+
+const t = useTranslations("en");
+---
+
+<BaseLayout>
+  <section class="section container">
+    <p class="eyebrow">Step 1 scaffold</p>
+    <h1 class="gradient-text">{t("site.title")}</h1>
+    <p class="lede">{t("site.description")}</p>
+  </section>
+
+  <style>
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      margin-bottom: var(--space-4);
+    }
+
+    .lede {
+      max-width: 36ch;
+      margin-top: var(--space-4);
+      color: var(--color-text-muted);
+      font-size: var(--text-lg);
+    }
+
+    h1 {
+      view-transition-name: page-title;
+    }
+  </style>
+</BaseLayout>
