@@ -1,0 +1,217 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Icon from "~/components/ui/Icon.astro";
+import { useTranslations } from "~/i18n/utils";
+import type { Lang } from "~/i18n/ui";
+import { pickPalette, getInitials } from "~/lib/cover";
+
+interface Props {
+  entry: CollectionEntry<"projects">;
+  lang: Lang;
+  index?: number;
+}
+
+const { entry, lang, index = 0 } = Astro.props;
+const t = useTranslations(lang);
+const { title, summary, tech, github, demo, featured } = entry.data;
+const [from, to] = pickPalette(title);
+const initials = getInitials(title);
+---
+
+<article
+  class:list={["card", "reveal", { featured }]}
+  data-stagger
+  style={`--reveal-delay: ${index * 80}ms;`}
+>
+  <div
+    class="cover"
+    style={`background: linear-gradient(135deg, ${from}, ${to});`}
+    aria-hidden="true"
+  >
+    <span class="initials">{initials}</span>
+    {featured && <span class="badge">{t("projects.featured")}</span>}
+  </div>
+
+  <div class="body">
+    <h3 class="title">{title}</h3>
+    <p class="summary">{summary[lang]}</p>
+
+    {
+      tech.length > 0 && (
+        <ul class="tech" aria-label="Tech stack">
+          {tech.map((item) => (
+            <li class="tech-chip">{item}</li>
+          ))}
+        </ul>
+      )
+    }
+
+    {
+      (github || demo) && (
+        <div class="links">
+          {github && (
+            <a
+              href={github}
+              class="link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Icon name="github" size={16} />
+              <span>{t("projects.viewSource")}</span>
+            </a>
+          )}
+          {demo && (
+            <a
+              href={demo}
+              class="link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Icon name="external-link" size={16} />
+              <span>{t("projects.viewDemo")}</span>
+            </a>
+          )}
+        </div>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition:
+      transform var(--duration-base) var(--ease-out-quart),
+      border-color var(--duration-base) var(--ease-out-quart),
+      box-shadow var(--duration-base) var(--ease-out-quart);
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-primary-soft);
+    box-shadow: var(--shadow-md);
+  }
+
+  .cover {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .cover::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        circle at 20% 25%,
+        rgba(255, 255, 255, 0.18),
+        transparent 55%
+      ),
+      radial-gradient(circle at 80% 80%, rgba(0, 0, 0, 0.25), transparent 65%);
+    pointer-events: none;
+  }
+
+  .initials {
+    font-family: var(--font-mono);
+    font-size: var(--text-5xl);
+    font-weight: var(--weight-bold);
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: var(--tracking-tight);
+    text-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+    z-index: 1;
+  }
+
+  .badge {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    z-index: 2;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-strong);
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(8px);
+    padding: 2px var(--space-2);
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  .body {
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    flex: 1;
+  }
+
+  .title {
+    font-size: var(--text-xl);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .summary {
+    color: var(--color-text-muted);
+    line-height: var(--leading-snug);
+  }
+
+  .tech {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+  }
+
+  .tech-chip {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    padding: 2px var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--color-border);
+    margin-top: auto;
+  }
+
+  .link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-text);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out-quart);
+  }
+
+  .link:hover {
+    color: var(--color-primary-soft);
+  }
+
+  @media (min-width: 768px) {
+    .body {
+      padding: var(--space-6);
+    }
+  }
+</style>

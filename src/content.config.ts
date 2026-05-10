@@ -22,7 +22,7 @@ const projects = defineCollection({
     z.object({
       title: z.string(),
       summary: i18nString,
-      bullets: i18nStringArray,
+      bullets: i18nStringArray.optional(),
       tech: z.array(z.string()),
       github: z.url().optional(),
       demo: z.url().optional(),

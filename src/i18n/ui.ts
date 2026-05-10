@@ -52,6 +52,14 @@ export const ui = {
       "Where I have shipped real products to real users. Most recent first.",
     "experience.present": "Present",
 
+    "projects.title": "Projects",
+    "projects.intro":
+      "Things I have built outside of work, and a few that became work.",
+    "projects.viewSource": "Source",
+    "projects.viewDemo": "Live demo",
+    "projects.featured": "Featured",
+    "projects.empty": "Projects coming soon.",
+
     "404.title": "Page not found",
     "404.body": "This page does not exist.",
     "404.cta": "Back to home",
@@ -98,6 +106,14 @@ export const ui = {
     "experience.intro":
       "Donde he entregado productos reales a usuarios reales. El más reciente arriba.",
     "experience.present": "Presente",
+
+    "projects.title": "Proyectos",
+    "projects.intro":
+      "Cosas que he construido fuera del trabajo, y algunas que se volvieron trabajo.",
+    "projects.viewSource": "Código",
+    "projects.viewDemo": "Demo en vivo",
+    "projects.featured": "Destacado",
+    "projects.empty": "Pronto agrego proyectos.",
 
     "404.title": "Página no encontrada",
     "404.body": "Esta página no existe.",
