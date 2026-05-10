@@ -3,6 +3,16 @@
 @import './typography.css';
 @import './animations.css';
 
+/* ===== Document scroll behavior ===== */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem; /* room for the sticky header */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
 /* ===== Layout primitives ===== */
 .container {
   width: 100%;
@@ -55,6 +65,9 @@
   padding: 1px;
   background: var(--gradient-primary);
   -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+          mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;

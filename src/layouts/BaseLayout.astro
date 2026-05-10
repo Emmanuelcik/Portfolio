@@ -2,6 +2,7 @@
 import { ClientRouter } from "astro:transitions";
 import SEO from "~/components/seo/SEO.astro";
 import JsonLd from "~/components/seo/JsonLd.astro";
+import Header from "~/components/layout/Header.astro";
 import { getLangFromUrl, useTranslations } from "~/i18n/utils";
 import "~/styles/global.css";
 
@@ -64,6 +65,7 @@ const {
   </head>
   <body>
     <a href="#main" class="skip-link">{t("a11y.skipToContent")}</a>
+    <Header lang={lang} />
     <main id="main">
       <slot />
     </main>

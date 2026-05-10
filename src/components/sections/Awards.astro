@@ -1,0 +1,221 @@
+---
+import { getCollection } from "astro:content";
+import Icon from "~/components/ui/Icon.astro";
+import { useTranslations } from "~/i18n/utils";
+import type { Lang, UiKey } from "~/i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const entries = (await getCollection("awards")).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+
+type AwardType = "International" | "National" | "Regional" | "Local";
+
+const TYPE_KEYS: Record<AwardType, UiKey> = {
+  International: "awards.type.international",
+  National: "awards.type.national",
+  Regional: "awards.type.regional",
+  Local: "awards.type.local",
+};
+---
+
+{
+  entries.length > 0 && (
+    <section id="awards" class="awards">
+      <div class="container">
+        <header class="head reveal">
+          <h2 class="title">
+            <span class="gradient-text">{t("awards.title")}</span>
+          </h2>
+          <p class="intro">{t("awards.intro")}</p>
+        </header>
+
+        <ul class="grid">
+          {entries.map((entry, i) => {
+            const { name, issuer, date, position, type, url } = entry.data;
+            return (
+              <li
+                class:list={["card", "reveal", `tier-${type.toLowerCase()}`]}
+                data-stagger
+                style={`--reveal-delay: ${i * 80}ms;`}
+              >
+                <span class="tier-chip">{t(TYPE_KEYS[type])}</span>
+                <h3 class="name">{name[lang]}</h3>
+                <p class="meta">
+                  <span class="issuer">{issuer}</span>
+                  <span class="sep" aria-hidden="true">
+                    ·
+                  </span>
+                  <time datetime={date.toISOString()}>
+                    {date.getFullYear()}
+                  </time>
+                </p>
+                {position && <p class="position">{position}</p>}
+                {url && (
+                  <a
+                    href={url}
+                    class="link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Icon name="external-link" size={14} />
+                    <span>{t("awards.readMore")}</span>
+                  </a>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .awards {
+    padding-block: var(--space-16);
+  }
+
+  .head {
+    margin-bottom: var(--space-10);
+  }
+
+  .title {
+    font-size: var(--text-3xl);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: var(--space-3);
+  }
+
+  .intro {
+    color: var(--color-text-muted);
+    max-width: 56ch;
+  }
+
+  .grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    transition:
+      border-color var(--duration-fast) var(--ease-out-quart),
+      transform var(--duration-fast) var(--ease-out-quart);
+  }
+
+  .card:hover {
+    border-color: var(--color-border-strong);
+    transform: translateY(-1px);
+  }
+
+  .tier-chip {
+    align-self: flex-start;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    padding: 2px var(--space-2);
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface-2);
+    color: var(--color-text-muted);
+  }
+
+  .tier-international .tier-chip {
+    background: color-mix(in srgb, var(--color-primary) 18%, transparent);
+    color: var(--color-primary-soft);
+    border-color: color-mix(in srgb, var(--color-primary) 40%, transparent);
+  }
+
+  .tier-national .tier-chip {
+    background: color-mix(in srgb, var(--color-accent) 18%, transparent);
+    color: var(--color-accent-soft);
+    border-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+  }
+
+  .tier-regional .tier-chip {
+    background: color-mix(in srgb, var(--color-highlight) 15%, transparent);
+    color: var(--color-highlight);
+    border-color: color-mix(in srgb, var(--color-highlight) 40%, transparent);
+  }
+
+  .name {
+    font-size: var(--text-lg);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+    margin-top: var(--space-1);
+  }
+
+  .meta {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    align-items: center;
+  }
+
+  .issuer {
+    color: var(--color-text);
+  }
+
+  .sep {
+    color: var(--color-text-subtle);
+  }
+
+  .position {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-highlight);
+    margin-top: var(--space-1);
+  }
+
+  .link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-primary-soft);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out-quart);
+  }
+
+  .link:hover {
+    color: var(--color-text-strong);
+  }
+
+  @media (min-width: 768px) {
+    .awards {
+      padding-block: var(--space-24);
+    }
+
+    .head {
+      margin-bottom: var(--space-12);
+    }
+
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-5);
+    }
+  }
+</style>

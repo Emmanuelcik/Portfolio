@@ -18,6 +18,7 @@ export const ui = {
     "nav.skills": "Skills",
     "nav.experience": "Experience",
     "nav.projects": "Projects",
+    "nav.awards": "Awards",
     "nav.community": "Community",
     "nav.contact": "Contact",
 
@@ -30,6 +31,10 @@ export const ui = {
 
     "a11y.skipToContent": "Skip to content",
     "a11y.themeToggle": "Toggle theme",
+
+    "nav.menu": "Menu",
+    "nav.close": "Close menu",
+    "nav.primary": "Primary navigation",
 
     "hero.status": "Backend Developer at Vierge Group Mexico",
     "hero.greeting": "Hi, I'm",
@@ -60,6 +65,15 @@ export const ui = {
     "projects.featured": "Featured",
     "projects.empty": "Projects coming soon.",
 
+    "awards.title": "Awards",
+    "awards.intro":
+      "Recognition for work I am proud of.",
+    "awards.type.international": "International",
+    "awards.type.national": "National",
+    "awards.type.regional": "Regional",
+    "awards.type.local": "Local",
+    "awards.readMore": "Read more",
+
     "404.title": "Page not found",
     "404.body": "This page does not exist.",
     "404.cta": "Back to home",
@@ -73,6 +87,7 @@ export const ui = {
     "nav.skills": "Stack",
     "nav.experience": "Experiencia",
     "nav.projects": "Proyectos",
+    "nav.awards": "Logros",
     "nav.community": "Comunidad",
     "nav.contact": "Contacto",
 
@@ -85,6 +100,10 @@ export const ui = {
 
     "a11y.skipToContent": "Saltar al contenido",
     "a11y.themeToggle": "Cambiar tema",
+
+    "nav.menu": "Menú",
+    "nav.close": "Cerrar menú",
+    "nav.primary": "Navegación principal",
 
     "hero.status": "Backend Developer en Vierge Group México",
     "hero.greeting": "Hola, soy",
@@ -114,6 +133,15 @@ export const ui = {
     "projects.viewDemo": "Demo en vivo",
     "projects.featured": "Destacado",
     "projects.empty": "Pronto agrego proyectos.",
+
+    "awards.title": "Reconocimientos",
+    "awards.intro":
+      "Reconocimiento por trabajo del que me siento orgulloso.",
+    "awards.type.international": "Internacional",
+    "awards.type.national": "Nacional",
+    "awards.type.regional": "Regional",
+    "awards.type.local": "Local",
+    "awards.readMore": "Leer más",
 
     "404.title": "Página no encontrada",
     "404.body": "Esta página no existe.",

@@ -1,0 +1,410 @@
+---
+import Icon from "~/components/ui/Icon.astro";
+import { useTranslations, localizedPath, unlocalizedPath } from "~/i18n/utils";
+import type { Lang } from "~/i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const otherLang: Lang = lang === "en" ? "es" : "en";
+const otherPath = localizedPath(unlocalizedPath(Astro.url.pathname), otherLang);
+const homeHref = localizedPath("/", lang);
+
+const NAV = [
+  { href: "#skills", key: "nav.skills" },
+  { href: "#experience", key: "nav.experience" },
+  { href: "#projects", key: "nav.projects" },
+  { href: "#awards", key: "nav.awards" },
+] as const;
+---
+
+<header class="header" data-scrolled="false">
+  <div class="container header-inner">
+    <a href={homeHref} class="brand" aria-label="Home">
+      <span class="brand-mark">JE</span><span class="brand-dot">.</span>
+    </a>
+
+    <nav class="desktop-nav" aria-label={t("nav.primary")}>
+      <ul>
+        {
+          NAV.map((item) => (
+            <li>
+              <a href={item.href}>{t(item.key)}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="actions">
+      <a
+        href={otherPath}
+        class="lang-switch"
+        hreflang={otherLang}
+        aria-label={`${t("lang.switch")}`}
+      >
+        <Icon name="globe" size={14} />
+        <span>{otherLang.toUpperCase()}</span>
+      </a>
+
+      <button
+        class="theme-toggle"
+        type="button"
+        aria-label={t("a11y.themeToggle")}
+      >
+        <Icon name="sun" size={18} class="sun-icon" />
+        <Icon name="moon" size={18} class="moon-icon" />
+      </button>
+
+      <button
+        class="menu-trigger"
+        type="button"
+        aria-label={t("nav.menu")}
+        aria-controls="mobile-menu"
+        aria-expanded="false"
+      >
+        <Icon name="menu" size={20} />
+      </button>
+    </div>
+  </div>
+</header>
+
+<dialog class="mobile-menu" id="mobile-menu" aria-label={t("nav.primary")}>
+  <div class="dialog-inner">
+    <button class="close" type="button" aria-label={t("nav.close")}>
+      <Icon name="close" size={24} />
+    </button>
+
+    <ul class="mobile-links">
+      {
+        NAV.map((item) => (
+          <li>
+            <a href={item.href}>{t(item.key)}</a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="mobile-footer">
+      <a href={otherPath} class="mobile-lang" hreflang={otherLang}>
+        <Icon name="globe" size={16} />
+        <span>{t("lang.switch")}</span>
+      </a>
+    </div>
+  </div>
+</dialog>
+
+<div id="header-sentinel" aria-hidden="true"></div>
+
+<script>
+  function setupHeader() {
+    const header = document.querySelector<HTMLElement>(".header");
+    const sentinel = document.querySelector<HTMLElement>("#header-sentinel");
+    const trigger = document.querySelector<HTMLButtonElement>(".menu-trigger");
+    const closeBtn = document.querySelector<HTMLButtonElement>(
+      ".mobile-menu .close",
+    );
+    const dialog = document.querySelector<HTMLDialogElement>("#mobile-menu");
+    const themeBtn = document.querySelector<HTMLButtonElement>(".theme-toggle");
+
+    if (sentinel && header) {
+      const obs = new IntersectionObserver(
+        ([entry]) => {
+          header.dataset.scrolled = String(!entry.isIntersecting);
+        },
+        { threshold: 0 },
+      );
+      obs.observe(sentinel);
+    }
+
+    trigger?.addEventListener("click", () => {
+      dialog?.showModal();
+      trigger.setAttribute("aria-expanded", "true");
+    });
+
+    closeBtn?.addEventListener("click", () => dialog?.close());
+
+    dialog?.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => dialog.close());
+    });
+
+    dialog?.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+
+    dialog?.addEventListener("close", () => {
+      trigger?.setAttribute("aria-expanded", "false");
+    });
+
+    themeBtn?.addEventListener("click", () => {
+      const root = document.documentElement;
+      const next = root.dataset.theme === "dark" ? "light" : "dark";
+      root.dataset.theme = next;
+      try {
+        localStorage.setItem("theme", next);
+      } catch {
+        /* storage may be unavailable in private mode */
+      }
+    });
+  }
+
+  document.addEventListener("astro:page-load", setupHeader);
+</script>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    width: 100%;
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    transition:
+      background var(--duration-base) var(--ease-out-quart),
+      border-color var(--duration-base) var(--ease-out-quart),
+      backdrop-filter var(--duration-base) var(--ease-out-quart);
+  }
+
+  .header[data-scrolled="true"] {
+    background: color-mix(in srgb, var(--color-bg) 80%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom-color: var(--color-border);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: var(--space-3);
+    gap: var(--space-4);
+  }
+
+  .brand {
+    font-family: var(--font-mono);
+    font-size: var(--text-base);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-strong);
+    text-decoration: none;
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .brand-dot {
+    color: var(--color-primary);
+  }
+
+  .desktop-nav {
+    display: none;
+  }
+
+  .desktop-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: var(--space-6);
+  }
+
+  .desktop-nav a {
+    position: relative;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    padding-block: var(--space-2);
+    transition: color var(--duration-fast) var(--ease-out-quart);
+  }
+
+  .desktop-nav a:hover {
+    color: var(--color-text);
+  }
+
+  .desktop-nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: var(--gradient-primary);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--duration-fast) var(--ease-out-quart);
+  }
+
+  .desktop-nav a:hover::after {
+    transform: scaleX(1);
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  .lang-switch,
+  .theme-toggle,
+  .menu-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-1);
+    min-width: 44px;
+    min-height: 44px;
+    padding: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    text-decoration: none;
+    transition:
+      color var(--duration-fast) var(--ease-out-quart),
+      border-color var(--duration-fast) var(--ease-out-quart),
+      background var(--duration-fast) var(--ease-out-quart);
+  }
+
+  .lang-switch:hover,
+  .theme-toggle:hover,
+  .menu-trigger:hover {
+    color: var(--color-text);
+    border-color: var(--color-border);
+    background: var(--color-surface-2);
+  }
+
+  .lang-switch span {
+    letter-spacing: var(--tracking-wide);
+  }
+
+  /* Theme toggle: show one icon at a time based on the active theme */
+  .theme-toggle .sun-icon {
+    display: none;
+  }
+  .theme-toggle .moon-icon {
+    display: block;
+  }
+  :global([data-theme="light"]) .theme-toggle .sun-icon {
+    display: block;
+  }
+  :global([data-theme="light"]) .theme-toggle .moon-icon {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .desktop-nav {
+      display: flex;
+    }
+    .menu-trigger {
+      display: none;
+    }
+  }
+
+  /* Mobile dialog */
+  .mobile-menu {
+    border: none;
+    padding: 0;
+    margin: 0;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    background: var(--color-bg);
+    color: var(--color-text);
+  }
+
+  .mobile-menu::backdrop {
+    background: color-mix(in srgb, var(--color-bg) 92%, transparent);
+    backdrop-filter: blur(8px);
+  }
+
+  .dialog-inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    padding: var(--space-5) var(--gutter);
+    height: 100%;
+  }
+
+  .close {
+    align-self: flex-end;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+      background var(--duration-fast) var(--ease-out-quart),
+      border-color var(--duration-fast) var(--ease-out-quart);
+  }
+
+  .close:hover {
+    background: var(--color-surface-2);
+    border-color: var(--color-border-strong);
+  }
+
+  .mobile-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .mobile-links a {
+    display: block;
+    padding: var(--space-3) 0;
+    font-size: var(--text-2xl);
+    font-family: var(--font-sans);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out-quart);
+  }
+
+  .mobile-links a:hover {
+    color: var(--color-primary-soft);
+  }
+
+  .mobile-footer {
+    margin-top: auto;
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .mobile-lang {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out-quart);
+  }
+
+  .mobile-lang:hover {
+    color: var(--color-primary-soft);
+  }
+
+  #header-sentinel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 1px;
+    pointer-events: none;
+  }
+</style>
