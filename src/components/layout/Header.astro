@@ -153,7 +153,60 @@ const NAV = [
     });
   }
 
-  document.addEventListener("astro:page-load", setupHeader);
+  function setupActiveSection() {
+    const navLinks = document.querySelectorAll<HTMLAnchorElement>(
+      ".desktop-nav a, .mobile-links a",
+    );
+    if (!navLinks.length) return;
+
+    // Group links by the section id they target (mobile + desktop both link to #id).
+    const linksBySection = new Map<string, HTMLAnchorElement[]>();
+    navLinks.forEach((link) => {
+      const href = link.getAttribute("href");
+      if (!href?.startsWith("#")) return;
+      const id = href.slice(1);
+      const bucket = linksBySection.get(id) ?? [];
+      bucket.push(link);
+      linksBySection.set(id, bucket);
+    });
+
+    // Resolve sections in DOM order  the first visible one wins.
+    const sections = Array.from(linksBySection.keys())
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+
+    if (sections.length === 0) return;
+
+    const visible = new Set<string>();
+
+    const apply = (activeId: string | undefined) => {
+      linksBySection.forEach((links, id) => {
+        const isActive = id === activeId;
+        links.forEach((link) => {
+          if (isActive) link.setAttribute("aria-current", "true");
+          else link.removeAttribute("aria-current");
+        });
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) visible.add(entry.target.id);
+          else visible.delete(entry.target.id);
+        });
+        apply(sections.find((s) => visible.has(s.id))?.id);
+      },
+      { rootMargin: "-15% 0px -80% 0px", threshold: 0 },
+    );
+
+    sections.forEach((s) => observer.observe(s));
+  }
+
+  document.addEventListener("astro:page-load", () => {
+    setupHeader();
+    setupActiveSection();
+  });
 </script>
 
 <style>
@@ -236,8 +289,17 @@ const NAV = [
     transition: transform var(--duration-fast) var(--ease-out-quart);
   }
 
-  .desktop-nav a:hover::after {
+  .desktop-nav a:hover::after,
+  .desktop-nav a[aria-current="true"]::after {
     transform: scaleX(1);
+  }
+
+  .desktop-nav a[aria-current="true"] {
+    color: var(--color-text);
+  }
+
+  .mobile-links a[aria-current="true"] {
+    color: var(--color-primary-soft);
   }
 
   .actions {
