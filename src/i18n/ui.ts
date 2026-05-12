@@ -65,6 +65,10 @@ export const ui = {
     "projects.featured": "Featured",
     "projects.empty": "Projects coming soon.",
 
+    "project.back": "Back to projects",
+    "project.highlights": "Highlights",
+    "project.tech": "Tech stack",
+
     "awards.title": "Awards",
     "awards.intro":
       "Recognition for work I am proud of.",
@@ -142,6 +146,10 @@ export const ui = {
     "projects.viewDemo": "Demo en vivo",
     "projects.featured": "Destacado",
     "projects.empty": "Pronto agrego proyectos.",
+
+    "project.back": "Volver a proyectos",
+    "project.highlights": "Destacados",
+    "project.tech": "Stack tecnológico",
 
     "awards.title": "Reconocimientos",
     "awards.intro":

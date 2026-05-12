@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 // Update SITE before deploying. Used for canonical URLs, sitemap, and OG.
-const SITE = 'https://emmanuelcik.dev';
+const SITE = 'https://emmanuelcik.com';
 
 export default defineConfig({
   site: SITE,

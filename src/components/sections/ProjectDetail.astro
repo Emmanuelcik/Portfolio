@@ -1,0 +1,313 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { useTranslations, localizedPath } from "~/i18n/utils";
+import type { Lang } from "~/i18n/ui";
+import { pickPalette, getInitials } from "~/lib/cover";
+import Icon from "~/components/ui/Icon.astro";
+
+interface Props {
+  entry: CollectionEntry<"projects">;
+  slug: string;
+  lang: Lang;
+}
+
+const { entry, slug, lang } = Astro.props;
+const t = useTranslations(lang);
+const { title, summary, bullets, tech, github, demo, featured } = entry.data;
+const [from, to] = pickPalette(title);
+const initials = getInitials(title);
+
+const backHref = `${localizedPath("/", lang)}#projects`;
+const localBullets = bullets?.[lang];
+---
+
+<article class="detail">
+  <div class="container">
+    <a href={backHref} class="back" data-astro-prefetch>
+      <Icon name="arrow-left" size={14} />
+      <span>{t("project.back")}</span>
+    </a>
+
+    <header class="cover-wrap reveal">
+      <div
+        class="cover"
+        style={`background: linear-gradient(135deg, ${from}, ${to}); view-transition-name: cover-${slug};`}
+        aria-hidden="true"
+      >
+        <span class="initials">{initials}</span>
+        {featured && <span class="badge">{t("projects.featured")}</span>}
+      </div>
+    </header>
+
+    <h1 class="title" style={`view-transition-name: title-${slug};`}>
+      {title}
+    </h1>
+    <p class="summary reveal">{summary[lang]}</p>
+
+    {
+      localBullets && localBullets.length > 0 && (
+        <section class="highlights reveal">
+          <h2 class="section-title">{t("project.highlights")}</h2>
+          <ul class="bullets">
+            {localBullets.map((b) => (
+              <li>{b}</li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      tech.length > 0 && (
+        <section class="tech-section reveal">
+          <h2 class="section-title">{t("project.tech")}</h2>
+          <ul class="tech">
+            {tech.map((item) => (
+              <li class="tech-chip">{item}</li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      (github || demo) && (
+        <div class="links reveal">
+          {github && (
+            <a
+              href={github}
+              class="link primary"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Icon name="github" size={18} />
+              <span>{t("projects.viewSource")}</span>
+            </a>
+          )}
+          {demo && (
+            <a
+              href={demo}
+              class="link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Icon name="external-link" size={18} />
+              <span>{t("projects.viewDemo")}</span>
+            </a>
+          )}
+        </div>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .detail {
+    padding-block: var(--space-10) var(--space-16);
+  }
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    margin-bottom: var(--space-6);
+    padding-block: var(--space-2);
+    transition: color var(--duration-fast) var(--ease-out-quart);
+  }
+
+  .back:hover {
+    color: var(--color-primary-soft);
+  }
+
+  .cover-wrap {
+    margin-bottom: var(--space-8);
+  }
+
+  .cover {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+  }
+
+  .cover::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        circle at 20% 25%,
+        rgba(255, 255, 255, 0.18),
+        transparent 55%
+      ),
+      radial-gradient(circle at 80% 80%, rgba(0, 0, 0, 0.25), transparent 65%);
+    pointer-events: none;
+  }
+
+  .initials {
+    font-family: var(--font-mono);
+    font-size: clamp(3rem, 4rem + 5vw, 6rem);
+    font-weight: var(--weight-bold);
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: var(--tracking-tight);
+    text-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+    z-index: 1;
+  }
+
+  .badge {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    z-index: 2;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-strong);
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(8px);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  .title {
+    font-size: var(--text-4xl);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: var(--space-4);
+    text-wrap: balance;
+  }
+
+  .summary {
+    font-size: var(--text-lg);
+    color: var(--color-text);
+    line-height: var(--leading-snug);
+    margin-bottom: var(--space-10);
+    max-width: 60ch;
+  }
+
+  .highlights,
+  .tech-section {
+    margin-bottom: var(--space-10);
+  }
+
+  .section-title {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  .bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .bullets li {
+    position: relative;
+    padding-left: var(--space-5);
+    color: var(--color-text);
+    line-height: var(--leading-snug);
+  }
+
+  .bullets li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-primary-soft);
+  }
+
+  .tech {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .tech-chip {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    background: var(--glass-bg);
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    color: var(--color-text);
+    text-decoration: none;
+    font-size: var(--text-sm);
+    transition:
+      border-color var(--duration-fast) var(--ease-out-quart),
+      transform var(--duration-fast) var(--ease-out-quart),
+      color var(--duration-fast) var(--ease-out-quart);
+  }
+
+  .link:hover {
+    border-color: var(--color-primary-soft);
+    transform: translateY(-1px);
+  }
+
+  .link.primary {
+    background: var(--gradient-primary);
+    border-color: transparent;
+    color: var(--color-text-strong);
+  }
+
+  .link.primary:hover {
+    box-shadow: var(--shadow-glow);
+  }
+
+  @media (min-width: 768px) {
+    .detail {
+      padding-block: var(--space-12) var(--space-24);
+    }
+
+    .cover {
+      aspect-ratio: 21 / 9;
+    }
+
+    .title {
+      font-size: var(--text-5xl);
+    }
+
+    .cover-wrap {
+      margin-bottom: var(--space-10);
+    }
+  }
+</style>
