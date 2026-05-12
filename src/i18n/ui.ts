@@ -74,6 +74,15 @@ export const ui = {
     "awards.type.local": "Local",
     "awards.readMore": "Read more",
 
+    "contact.title": "Let's build something together.",
+    "contact.intro":
+      "Open to full-stack roles, freelance contracts, and interesting LLM work. I usually reply within a day.",
+    "contact.copyEmail": "Copy email to clipboard",
+    "contact.copied": "Copied",
+    "contact.sendEmail": "Send email",
+
+    "footer.builtWith": "Built with",
+
     "404.title": "Page not found",
     "404.body": "This page does not exist.",
     "404.cta": "Back to home",
@@ -142,6 +151,15 @@ export const ui = {
     "awards.type.regional": "Regional",
     "awards.type.local": "Local",
     "awards.readMore": "Leer más",
+
+    "contact.title": "Construyamos algo juntos.",
+    "contact.intro":
+      "Abierto a roles full-stack, contratos freelance y trabajo interesante con LLMs. Suelo responder en menos de un día.",
+    "contact.copyEmail": "Copiar correo al portapapeles",
+    "contact.copied": "Copiado",
+    "contact.sendEmail": "Enviar correo",
+
+    "footer.builtWith": "Hecho con",
 
     "404.title": "Página no encontrada",
     "404.body": "Esta página no existe.",

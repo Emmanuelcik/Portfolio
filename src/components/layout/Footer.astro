@@ -1,0 +1,77 @@
+---
+import { useTranslations } from '~/i18n/utils';
+import type { Lang } from '~/i18n/ui';
+import { SITE_OWNER } from '~/data/socials';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <p class="copy">
+      © {year} {SITE_OWNER.shortName}.
+      <span class="rights">{t('footer.rights')}</span>
+    </p>
+    <p class="built">
+      {t('footer.builtWith')}
+      <a
+        href="https://astro.build"
+        target="_blank"
+        rel="noopener noreferrer"
+      >Astro</a>.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    padding-block: var(--space-8);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+
+  .copy,
+  .built {
+    margin: 0;
+  }
+
+  .rights {
+    color: var(--color-text-subtle);
+  }
+
+  .footer a {
+    color: var(--color-text);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-border);
+    transition:
+      color var(--duration-fast) var(--ease-out-quart),
+      border-color var(--duration-fast) var(--ease-out-quart);
+  }
+
+  .footer a:hover {
+    color: var(--color-primary-soft);
+    border-bottom-color: var(--color-primary-soft);
+  }
+
+  @media (min-width: 768px) {
+    .footer-inner {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+</style>

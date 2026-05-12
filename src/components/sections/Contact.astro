@@ -1,0 +1,239 @@
+---
+import Icon from "~/components/ui/Icon.astro";
+import { useTranslations } from "~/i18n/utils";
+import type { Lang } from "~/i18n/ui";
+import { SITE_OWNER, SOCIALS } from "~/data/socials";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const externalSocials = SOCIALS.filter((s) => s.icon !== "mail");
+---
+
+<section id="contact" class="contact">
+  <div class="container">
+    <header class="head reveal">
+      <h2 class="title">
+        <span class="gradient-text">{t("contact.title")}</span>
+      </h2>
+      <p class="intro">{t("contact.intro")}</p>
+    </header>
+
+    <div class="actions reveal" data-stagger style="--reveal-delay: 100ms;">
+      <button
+        class="email-button"
+        type="button"
+        data-email={SITE_OWNER.email}
+        data-copied-label={t("contact.copied")}
+        aria-label={t("contact.copyEmail")}
+      >
+        <Icon name="mail" size={18} />
+        <span class="email-text">{SITE_OWNER.email}</span>
+        <span class="email-feedback" aria-live="polite"></span>
+      </button>
+
+      <a class="email-link" href={`mailto:${SITE_OWNER.email}`}>
+        {t("contact.sendEmail")}
+        <Icon name="arrow-right" size={16} />
+      </a>
+    </div>
+
+    <ul class="socials reveal" data-stagger style="--reveal-delay: 200ms;">
+      {
+        externalSocials.map((social) => (
+          <li>
+            <a
+              href={social.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={social.label}
+            >
+              <Icon name={social.icon} size={20} />
+              <span class="social-username">{social.username}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<script>
+  function setupContact() {
+    const button = document.querySelector<HTMLButtonElement>(".email-button");
+    if (!button) return;
+
+    const feedback = button.querySelector<HTMLElement>(".email-feedback");
+    const email = button.dataset.email;
+    const copiedLabel = button.dataset.copiedLabel ?? "Copied";
+    if (!email || !feedback) return;
+
+    let timer: number | undefined;
+
+    button.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(email);
+        feedback.textContent = copiedLabel;
+        feedback.dataset.visible = "true";
+        window.clearTimeout(timer);
+        timer = window.setTimeout(() => {
+          feedback.dataset.visible = "false";
+        }, 1800);
+      } catch {
+        window.location.href = `mailto:${email}`;
+      }
+    });
+  }
+
+  document.addEventListener("astro:page-load", setupContact);
+</script>
+
+<style>
+  .contact {
+    padding-block: var(--space-16);
+  }
+
+  .head {
+    margin-bottom: var(--space-8);
+    max-width: var(--container-narrow);
+  }
+
+  .title {
+    font-size: var(--text-4xl);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: var(--space-4);
+    text-wrap: balance;
+  }
+
+  .intro {
+    color: var(--color-text-muted);
+    font-size: var(--text-lg);
+    line-height: var(--leading-snug);
+    max-width: 56ch;
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+    margin-bottom: var(--space-10);
+  }
+
+  .email-button {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-5);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    color: var(--color-text);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    cursor: pointer;
+    transition:
+      border-color var(--duration-fast) var(--ease-out-quart),
+      transform var(--duration-fast) var(--ease-out-quart);
+  }
+
+  .email-button:hover {
+    border-color: var(--color-primary-soft);
+    transform: translateY(-1px);
+  }
+
+  .email-feedback {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-success);
+    margin-left: var(--space-1);
+    opacity: 0;
+    transition: opacity var(--duration-fast) var(--ease-out-quart);
+  }
+
+  .email-feedback[data-visible="true"] {
+    opacity: 1;
+  }
+
+  .email-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-primary-soft);
+    text-decoration: none;
+    font-size: var(--text-sm);
+    transition: color var(--duration-fast) var(--ease-out-quart);
+  }
+
+  .email-link:hover {
+    color: var(--color-text-strong);
+  }
+
+  .socials {
+    list-style: none;
+    margin: 0;
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .socials li + li {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .socials a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out-quart);
+    width: 100%;
+  }
+
+  .socials a:hover {
+    color: var(--color-primary-soft);
+  }
+
+  .social-username {
+    overflow-wrap: anywhere;
+  }
+
+  @media (min-width: 768px) {
+    .contact {
+      padding-block: var(--space-24);
+    }
+
+    .actions {
+      flex-direction: row;
+      align-items: center;
+      gap: var(--space-5);
+    }
+
+    .socials {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: var(--space-8);
+    }
+
+    .socials li + li {
+      border-top: none;
+    }
+
+    .socials a {
+      padding: 0;
+    }
+  }
+</style>

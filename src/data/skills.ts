@@ -23,7 +23,17 @@ export const SKILL_GROUPS: SkillGroup[] = [
   {
     id: "frontend",
     labelKey: "skills.group.frontend",
-    items: ["React", "Vue", "Astro", "Tailwind CSS", "HTML5", "CSS3"],
+    items: [
+      "React",
+      "Vue",
+      "Astro",
+      "Tailwind CSS",
+      "HTML5",
+      "CSS3",
+      "Zustand",
+      "TanStack Query",
+      "WebSockets",
+    ],
   },
   {
     id: "backend",
