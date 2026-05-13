@@ -33,6 +33,11 @@
   --color-success:        #10B981;
   --color-danger:         #EF4444;
 
+  /* Always-white text for content placed on brand-color surfaces
+     (gradients, pills with primary bg, semi-transparent dark overlays).
+     Never inverts per theme  brand colors are saturated in both modes. */
+  --color-on-primary:     #FFFFFF;
+
   /* ===== Gradients ===== */
   --gradient-primary: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
   --gradient-soft: linear-gradient(
@@ -136,9 +141,11 @@
   --z-toast:  100;
 }
 
-/* Light theme stub  populated when we wire the toggle */
+/* Light theme: surfaces / text inverted, brand palette preserved.
+ * Glass and glow tokens get gentler values to feel right on bright bg. */
 [data-theme='light'] {
   color-scheme: light;
+
   --color-bg:           #FAFAFC;
   --color-surface:      #FFFFFF;
   --color-surface-2:    #F4F4F8;
@@ -148,6 +155,25 @@
   --color-text-strong:  #0B0B12;
   --color-text-muted:   #4B5563;
   --color-text-subtle:  #6B7280;
+
+  /* Glass: semi-transparent white that still lets backdrop blur breathe.
+     Borders pick up a violet tint so cards feel brand-aligned. */
+  --glass-bg:     color-mix(in srgb, var(--color-surface) 78%, transparent);
+  --glass-border: color-mix(in srgb, var(--color-primary) 16%, transparent);
+
+  /* Glow needs to be much weaker over a bright canvas  the dark-theme
+     25% would wash the whole hero violet. */
+  --gradient-glow: radial-gradient(
+    60% 60% at 50% 0%,
+    color-mix(in srgb, var(--color-primary) 12%, transparent) 0%,
+    transparent 70%
+  );
+
+  /* Shadows: low-alpha so cards lift without smudging the page. */
+  --shadow-sm:   0 1px 2px rgba(15, 15, 20, 0.06);
+  --shadow-md:   0 4px 12px rgba(15, 15, 20, 0.10);
+  --shadow-lg:   0 10px 30px rgba(15, 15, 20, 0.14);
+  --shadow-glow: 0 0 32px color-mix(in srgb, var(--color-primary) 22%, transparent);
 }
 
 /* Honor reduced-motion globally by collapsing duration tokens to 0 */
