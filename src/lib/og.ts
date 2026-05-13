@@ -1,11 +1,13 @@
 /**
- * Open Graph image renderer. Builds a satori element tree for a project
- * detail card and rasterizes it via resvg at build time. Used by the
- * `og/[lang]/projects/[slug].png.ts` endpoint.
+ * Open Graph image renderers. Builds Satori element trees and rasterizes
+ * them via Resvg at build time. Two flavors:
  *
- * The output is a 1200x630 PNG (Twitter summary_large_image / OG default).
- * Typography uses Inter via the @fontsource/inter package (WOFF, since
- * satori does not support WOFF2). Loaded from node_modules at build time.
+ *  - `renderHomeOG()`   for the landing page in each locale.
+ *  - `renderProjectOG()` for each project detail page.
+ *
+ * Output: 1200x630 PNG (Twitter summary_large_image / OG default).
+ * Typography: Inter Regular + Bold via @fontsource/inter (WOFF format;
+ * Satori does not support WOFF2).
  */
 
 import fs from 'node:fs';
@@ -30,6 +32,36 @@ const fonts: SatoriOptions['fonts'] = [
   { name: 'Inter', data: fontRegular, weight: 400, style: 'normal' },
   { name: 'Inter', data: fontBold, weight: 700, style: 'normal' },
 ];
+
+const WIDTH = 1200;
+const HEIGHT = 630;
+
+async function rasterize(tree: unknown): Promise<Uint8Array> {
+  const svg = await satori(tree as never, {
+    width: WIDTH,
+    height: HEIGHT,
+    fonts,
+  });
+  return new Resvg(svg, { fitTo: { mode: 'width', value: WIDTH } })
+    .render()
+    .asPng();
+}
+
+function divider() {
+  return {
+    type: 'div',
+    key: 'divider',
+    props: {
+      style: {
+        width: 96,
+        height: 4,
+        backgroundColor: 'rgba(255, 255, 255, 0.55)',
+        borderRadius: 2,
+      },
+      children: '',
+    },
+  };
+}
 
 export interface ProjectOGOptions {
   title: string;
@@ -59,10 +91,8 @@ export async function renderProjectOG(
         background: `linear-gradient(135deg, ${from} 0%, ${to} 100%)`,
         color: '#FFFFFF',
         fontFamily: 'Inter',
-        position: 'relative',
       },
       children: [
-        // Top row: initials mark + featured badge
         {
           type: 'div',
           key: 'top',
@@ -110,7 +140,6 @@ export async function renderProjectOG(
             ].filter(Boolean),
           },
         },
-        // Main: title + divider + summary
         {
           type: 'div',
           key: 'main',
@@ -135,19 +164,7 @@ export async function renderProjectOG(
                   children: title,
                 },
               },
-              {
-                type: 'div',
-                key: 'divider',
-                props: {
-                  style: {
-                    width: 96,
-                    height: 4,
-                    backgroundColor: 'rgba(255, 255, 255, 0.55)',
-                    borderRadius: 2,
-                  },
-                  children: '',
-                },
-              },
+              divider(),
               {
                 type: 'div',
                 key: 'summary',
@@ -156,7 +173,6 @@ export async function renderProjectOG(
                     fontSize: 30,
                     lineHeight: 1.3,
                     color: 'rgba(255, 255, 255, 0.92)',
-                    fontWeight: 400,
                   },
                   children: summary,
                 },
@@ -164,7 +180,6 @@ export async function renderProjectOG(
             ],
           },
         },
-        // Footer: author / site
         {
           type: 'div',
           key: 'footer',
@@ -173,7 +188,6 @@ export async function renderProjectOG(
               display: 'flex',
               fontSize: 22,
               color: 'rgba(255, 255, 255, 0.78)',
-              fontWeight: 400,
               letterSpacing: '0.02em',
             },
             children: `${SITE_OWNER.shortName} · ${SITE_OWNER.githubUsername}`,
@@ -183,14 +197,138 @@ export async function renderProjectOG(
     },
   };
 
-  const svg = await satori(tree as never, {
-    width: 1200,
-    height: 630,
-    fonts,
-  });
+  return rasterize(tree);
+}
 
-  const png = new Resvg(svg, { fitTo: { mode: 'width', value: 1200 } })
-    .render()
-    .asPng();
-  return png;
+export interface HomeOGOptions {
+  name: string;
+  tagline: string;
+  site: string;
+  badgeLabel: string;
+}
+
+export async function renderHomeOG(opts: HomeOGOptions): Promise<Uint8Array> {
+  const { name, tagline, site, badgeLabel } = opts;
+  const initials = getInitials(name);
+
+  const tree = {
+    type: 'div',
+    key: null,
+    props: {
+      style: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        width: '100%',
+        height: '100%',
+        padding: '72px 80px',
+        background: 'linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%)',
+        color: '#FFFFFF',
+        fontFamily: 'Inter',
+      },
+      children: [
+        {
+          type: 'div',
+          key: 'top',
+          props: {
+            style: {
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              width: '100%',
+            },
+            children: [
+              {
+                type: 'div',
+                key: 'mark',
+                props: {
+                  style: {
+                    display: 'flex',
+                    fontSize: 42,
+                    fontWeight: 700,
+                    letterSpacing: '-0.02em',
+                    color: 'rgba(255, 255, 255, 0.95)',
+                  },
+                  children: `${initials}.`,
+                },
+              },
+              {
+                type: 'div',
+                key: 'badge',
+                props: {
+                  style: {
+                    display: 'flex',
+                    fontSize: 18,
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.12em',
+                    padding: '8px 18px',
+                    borderRadius: 999,
+                    backgroundColor: 'rgba(0, 0, 0, 0.32)',
+                    border: '1px solid rgba(255, 255, 255, 0.22)',
+                  },
+                  children: badgeLabel,
+                },
+              },
+            ],
+          },
+        },
+        {
+          type: 'div',
+          key: 'main',
+          props: {
+            style: {
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 24,
+              maxWidth: '92%',
+            },
+            children: [
+              {
+                type: 'div',
+                key: 'name',
+                props: {
+                  style: {
+                    fontSize: 78,
+                    fontWeight: 700,
+                    lineHeight: 1.05,
+                    letterSpacing: '-0.025em',
+                  },
+                  children: name,
+                },
+              },
+              divider(),
+              {
+                type: 'div',
+                key: 'tagline',
+                props: {
+                  style: {
+                    fontSize: 30,
+                    lineHeight: 1.3,
+                    color: 'rgba(255, 255, 255, 0.92)',
+                  },
+                  children: tagline,
+                },
+              },
+            ],
+          },
+        },
+        {
+          type: 'div',
+          key: 'footer',
+          props: {
+            style: {
+              display: 'flex',
+              fontSize: 24,
+              color: 'rgba(255, 255, 255, 0.85)',
+              letterSpacing: '0.02em',
+            },
+            children: site,
+          },
+        },
+      ],
+    },
+  };
+
+  return rasterize(tree);
 }

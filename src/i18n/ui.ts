@@ -39,7 +39,7 @@ export const ui = {
     "hero.status": "Backend Developer at Vierge Group Mexico",
     "hero.greeting": "Hi, I'm",
     "hero.tagline":
-      "Full-stack engineer with a backend tilt. I build reliable APIs, configurable platforms, and the occasional LLM integration.",
+      "Full-stack engineer. I build reliable APIs, configurable platforms, and the occasional LLM integration.",
     "hero.intro":
       "4 years shipping production code in JavaScript, TypeScript, Python, and PHP. Currently focused on backend systems for retail point of sale.",
 
@@ -121,7 +121,7 @@ export const ui = {
     "hero.status": "Backend Developer en Vierge Group México",
     "hero.greeting": "Hola, soy",
     "hero.tagline":
-      "Ingeniero full-stack con sesgo a backend. Construyo APIs confiables, plataformas configurables y, de vez en cuando, integraciones con LLMs.",
+      "Ingeniero full-stack. Construyo APIs confiables, plataformas configurables y, de vez en cuando, integraciones con LLMs.",
     "hero.intro":
       "4 años entregando código en producción con JavaScript, TypeScript, Python y PHP. Actualmente enfocado en sistemas backend para puntos de venta retail.",
 

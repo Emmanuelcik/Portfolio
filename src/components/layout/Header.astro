@@ -23,6 +23,8 @@ const NAV = [
 ] as const;
 ---
 
+<div class="progress-bar" aria-hidden="true"></div>
+
 <header class="header" data-scrolled="false">
   <div class="container header-inner">
     <a href={homeHref} class="brand" aria-label="Home">
@@ -203,13 +205,58 @@ const NAV = [
     sections.forEach((s) => observer.observe(s));
   }
 
+  function setupProgress() {
+    const bar = document.querySelector<HTMLElement>(".progress-bar");
+    if (!bar) return;
+
+    let raf = 0;
+
+    const update = () => {
+      raf = 0;
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - doc.clientHeight;
+      const pct = max > 0 ? doc.scrollTop / max : 0;
+      bar.style.transform = `scaleX(${pct})`;
+    };
+
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+  }
+
   document.addEventListener("astro:page-load", () => {
     setupHeader();
     setupActiveSection();
+    setupProgress();
   });
 </script>
 
 <style>
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--gradient-primary);
+    transform: scaleX(0);
+    transform-origin: left;
+    z-index: calc(var(--z-sticky) + 1);
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .progress-bar {
+      display: none;
+    }
+  }
+
   .header {
     position: sticky;
     top: 0;
