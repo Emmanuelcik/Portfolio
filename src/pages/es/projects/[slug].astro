@@ -23,8 +23,9 @@ interface Props {
 const { entry, slug } = Astro.props;
 const { title, summary } = entry.data;
 const pageTitle = `${title} · ${SITE_OWNER.shortName}`;
+const ogImage = `/og/es/projects/${slug}.png`;
 ---
 
-<BaseLayout title={pageTitle} description={summary.es}>
+<BaseLayout title={pageTitle} description={summary.es} ogImage={ogImage}>
   <ProjectDetail entry={entry} slug={slug} lang="es" />
 </BaseLayout>

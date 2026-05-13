@@ -24,15 +24,17 @@ tech:
   - LLM APIs
 bullets:
   en:
-    - Upgraded a domain-based SSO feature that allows B2B clients to access the platform through their own domain.
-    - Supported a full application migration to a newer major version, resolving compatibility issues and stabilizing production builds.
-    - Implemented configurable platform behavior using settings and feature flags to reduce recurring code changes.
-    - Redesigned premium-account provisioning by updating database tables and roles, replacing a cron-based flow with a database-driven process.
-    - Created Python dashboards and prototyped an LLM-API-based chat experience to explore data analysis and AI-assisted workflows.
+    - Helped build landing page functionality that allowed partner companies to promote their articles on the site using simple JSON-based configurations.
+    - Built a comprehensive admin panel for managing content, user data, and analytics.
+    - Contributed to the development and integration of Zoho CRM workflows for managing user data.
+    - Helped maintain and scale the Single Sign-On microservice used across the platform.
+    - Participated in the creation of a new site based on an existing platform, making it more configurable and consolidating functionality into a single repository.
+    - Collaborated with cross-functional teams to deliver high-quality features, actively reviewing pull requests to ensure code quality, consistency, and efficient implementation.
   es:
-    - Actualicé una funcionalidad de SSO basada en dominio que permite a clientes B2B acceder a la plataforma desde su propio dominio.
-    - Apoyé una migración completa de la aplicación a una versión mayor más reciente, resolviendo problemas de compatibilidad y estabilizando builds en producción.
-    - Implementé comportamiento configurable en la plataforma usando settings y feature flags para reducir cambios recurrentes en código.
-    - Rediseñé el aprovisionamiento de cuentas premium actualizando tablas y roles de base de datos, reemplazando un flujo basado en cron por un proceso controlado desde base de datos.
-    - Creé dashboards en Python y prototipé una experiencia de chat basada en LLM APIs para explorar flujos de análisis de datos y asistencia con IA.
+    - Ayudé a construir funcionalidades de landing pages que permitían a empresas aliadas promocionar sus artículos en el sitio usando configuraciones simples basadas en JSON.
+    - Construí un panel administrativo integral para gestionar contenido, datos de usuarios y analítica.
+    - Contribuí al desarrollo e integración de flujos con Zoho CRM para la gestión de datos de usuarios.
+    - Ayudé en el mantenimiento y escalabilidad del microservicio de Single Sign-On usado en la plataforma.
+    - Participé en la creación de un nuevo sitio basado en una plataforma existente, haciéndolo más configurable y consolidando la funcionalidad en un solo repositorio.
+    - Colaboré con equipos multidisciplinarios para entregar funcionalidades de alta calidad, revisando pull requests para asegurar calidad de código, consistencia y una implementación eficiente.
 ---

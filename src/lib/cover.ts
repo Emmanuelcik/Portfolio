@@ -5,6 +5,10 @@
  *
  * The seed (project title) maps to one of N on-brand palettes so colors
  * are consistent across rebuilds and varied enough across projects.
+ *
+ * Two parallel palettes are kept in lock-step so the in-browser cover
+ * (CSS variables) and the OG image (concrete hex) match for the same
+ * project. Indexes must align.
  */
 
 type Palette = readonly [from: string, to: string];
@@ -17,6 +21,14 @@ const PALETTES: readonly Palette[] = [
   ['var(--color-primary-soft)', 'var(--color-accent-soft)'],
 ];
 
+const PALETTES_HEX: readonly Palette[] = [
+  ['#8B5CF6', '#EC4899'],
+  ['#7C3AED', '#A78BFA'],
+  ['#EC4899', '#F59E0B'],
+  ['#8B5CF6', '#F59E0B'],
+  ['#A78BFA', '#F472B6'],
+];
+
 function hash(seed: string): number {
   let h = 0;
   for (let i = 0; i < seed.length; i++) {
@@ -25,8 +37,16 @@ function hash(seed: string): number {
   return Math.abs(h);
 }
 
+function paletteIndex(seed: string): number {
+  return hash(seed) % PALETTES.length;
+}
+
 export function pickPalette(seed: string): Palette {
-  return PALETTES[hash(seed) % PALETTES.length];
+  return PALETTES[paletteIndex(seed)];
+}
+
+export function pickPaletteHex(seed: string): Palette {
+  return PALETTES_HEX[paletteIndex(seed)];
 }
 
 export function getInitials(title: string): string {
